@@ -38,7 +38,7 @@ if ($tables_views && !$error && !$_POST["search"]) {
 	} elseif (JUSH != "sql") {
 		$result = (JUSH == "sqlite"
 			? queries("VACUUM")
-			: apply_queries("VACUUM" . ($_POST["optimize"] ? "" : " ANALYZE"), $_POST["tables"])
+			: apply_queries("VACUUM" . ($_POST["optimize"] ? " ANALYZE" : ""), $_POST["tables"])
 		);
 		$message = lang('Tables have been optimized.');
 	} elseif (!$_POST["tables"]) {
@@ -153,7 +153,7 @@ if (adminer()->homepage()) {
 			echo "</div>\n";
 			if (!information_schema(DB)) {
 				$vacuum = "<input type='submit' value='" . lang('Vacuum') . "'> " . on_help("'VACUUM'");
-				$optimize = "<input type='submit' name='optimize' value='" . lang('Optimize') . "'> " . on_help(JUSH == "sql" ? "'OPTIMIZE TABLE'" : "'VACUUM OPTIMIZE'");
+				$optimize = "<input type='submit' name='optimize' value='" . lang('Optimize') . "'> " . on_help(JUSH == "sql" ? "'OPTIMIZE TABLE'" : "'VACUUM ANALYZE'");
 				$print = (JUSH == "sqlite" ? $vacuum . "<input type='submit' name='check' value='" . lang('Check') . "'> " . on_help("'PRAGMA integrity_check'")
 				: (JUSH == "pgsql" ? $vacuum . $optimize
 				: (JUSH == "sql" ? "<input type='submit' value='" . lang('Analyze') . "'> " . on_help("'ANALYZE TABLE'")
